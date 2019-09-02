@@ -5,77 +5,77 @@
 #include <ctime>
 #include <cstdlib>
 #include "classes.h"
-using namespace std;
 
+using namespace std;
 int main()
 {
 	setlocale(LC_ALL, "Russian");
 	printf("Выбирете тип коллекции\nМассив(1)\nДвусвязный список(2)\nДвоичное дерево(3)\nДля выбора нужного типа коллекции введите номер соответствующего типа\n");
 	int Type;
 	int StartTime;
+	char inputString[256];
 	int EndTime;
 	int Time;
 	int result=0;
 	scanf_s("%d", &Type);
+	printf("Введите размер коллекции:");
+	int limit;
+	int size;
+	scanf_s("%d", &size);
+	printf("Введите число с которым необходимо сравнить элементы коллекции");
+	scanf("%d", &limit);
+
 	if (Type == 1)
 	{	
-
-		StartTime = clock();
-		WithArray.InitSize;
-		WithArray.InitLimit;
-		int* array = WithArray.InputArray(sizeOfArray);
-		if (sizeof(collection) < SizeOfCollection * 4)
+		printf("коллекция\n");
+		ClassArray withArray;
+		StartTime = clock();		
+		int* array = withArray.InputArray(size);
+		if (sizeof(array) < size * 4)
 		{
+			printf("Данные введены не корректно");
 			return 0;
 		}
-		for (int i = 0; i < SizeOfCollection; i++)
+		for (int i = 0; i < size; i++)
 		{
-			printf("%d", collection[i]);
+			printf("%d ", array[i]);
 		}
-		result=CalculateArray(collection, Limit, SizeOfCollection);
+		result = withArray.CalculateArray(array, limit, size);
 		EndTime = clock();
 		Time = EndTime - StartTime;
 	}
 	else if (Type == 2)
 	{
-		StartTime = clock();
-		printf("Введите размер коллекции");
-		printf("\n");
-		scanf_s("%d", &SizeOfCollection);
-		printf("Введите число с кототорым хотите сравнить элементы коллекции!");
-		printf("\n");
-		int Limit;
-		scanf_s("%d", &Limit);
+		ClassList withList;
 		printf("коллекция\n");
-		struct List* list = create();
-		for (int i = 0; i < SizeOfCollection; i++)
+		struct List* list = withList.create();
+		for (int i = 0; i < size; i++)
 		{
-			insert(list);
-			if (insert(list))
+			withList.insert(list);
+			if (withList.insert(list))
 			{
 				printf("Данные введены некорректно");
 				return 0;
 			}
 		}
-		ScrollList(Limit, list);
-		result=CalculatelList(Limit, list);
+		withList.ScrollList(limit, list);
+		result=withList.CalculatelList(limit, list);
 		EndTime = clock();
 		Time = EndTime - StartTime;
 	}
 	else if (Type == 3)
 	{
+		struct Branch
+		{
+			int value;
+			Branch *left, *right;
+		};
+		Branch *Tree = NULL;
+		ClassTree withTree;
 		StartTime = clock();
-		printf("Введите размер коллекции");
-		printf("\n");
-		scanf_s("%d", &SizeOfCollection);
-		printf("Введите число с кототорым хотите сравнить элементы коллекции!");
-		printf("\n");
-		int Limit;
-		scanf_s("%d", &Limit);
 		printf("коллекция\n");
 		int val;
-
-		for (int i = 0; i < SizeOfCollection; i++)
+		for (int i = 0; i < size; i++)
 		{
 			cin >> inputString;
 			for (int j = 0; j < strlen(inputString); j++)
@@ -87,10 +87,10 @@ int main()
 				}
 			}
 			val = atoi(inputString);
-			
+			withTree.add_node(val,Tree);
 		}
-		
-		result=
+		withTree.show(Tree);
+		result = withTree.CalculateTree(Tree, limit,result);
 		EndTime = clock();
 		Time = EndTime - StartTime;
 	}
@@ -105,15 +105,15 @@ int main()
 
 	if (Type == 1)
 	{
-		Member = sizeof(inputString) + sizeof(int) * 8 + sizeof(int)*SizeOfCollection; //8 - Количество переменных используемых при выполнении задания с помощью массивов
+		Member = sizeof(inputString) + sizeof(int) * 8 + sizeof(int)*size; //8 - Количество переменных используемых при выполнении задания с помощью массивов
 	}
 	else if (Type == 2)
 	{
-		Member = sizeof(inputString) + sizeof(int) * 8 + sizeof(List); // При помощи списков так же 8 переменных
+		Member = sizeof(inputString) + sizeof(int) * 8; // При помощи списков так же 8 переменных
 	}
 	else if (Type == 3)
 	{
-		Member = sizeof(inputString) + sizeof(int) * 8 + sizeof(Branch); //При помощи дерева 9 переменных
+		Member = sizeof(inputString) + sizeof(int) * 8; //При помощи дерева 9 переменных
 	}
 	else
 	{
