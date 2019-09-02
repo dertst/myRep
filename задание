@@ -4,221 +4,26 @@
 #include <Windows.h>
 #include <ctime>
 #include <cstdlib>
+#include "classes.h"
 using namespace std;
 
-struct Branch
-{
-	int value;
-	Branch *left, *right;
-};
-
-void show(Branch *&Tree, int Limit)
-{
-
-	if (Tree != NULL)
-	{
-		show(Tree->left, Limit);
-		printf("%d ", Tree->value);
-		show(Tree->right, Limit);
-	}
-}
-int CalculateTree(Branch *&Tree, int Limit, int result)
-{
-	if (Tree != NULL)
-	{
-		if (Limit < Tree->value)
-		{
-			result++;
-		}
-			result = CalculateTree(Tree->left, Limit, result);
-			result = CalculateTree(Tree->right, Limit, result);
-	}
-	return result;
-}
-void add_node(int value, Branch *&MyTree)
-{
-	if (NULL == MyTree)
-	{
-		MyTree = new Branch;
-		MyTree->value = value;
-		MyTree->left = MyTree->right = NULL;
-	}
-
-	if (value < MyTree->value)
-	{
-		if (MyTree->left != NULL) add_node(value, MyTree->left);
-		else
-		{
-			MyTree->left = new Branch;
-			MyTree->left->left = MyTree->left->right = NULL;
-			MyTree->left->value = value;
-		}
-	}
-
-	if (value > MyTree->value)
-	{
-		if (MyTree->right != NULL) add_node(value, MyTree->right);
-		else
-		{
-			MyTree->right = new Branch;
-			MyTree->right->left = MyTree->right->right = NULL;
-			MyTree->right->value = value;
-		}
-	}
-}
-int* InputArray(int SizeOfCollection)
-{
-	int *collection = (int*)malloc(SizeOfCollection * sizeof(int));
-	char inputString[256];
-	for (int i = 0; i < SizeOfCollection; i++)
-	{
-		cin >> inputString;
-		for (int j = 0; j < strlen(inputString); j++)
-		{
-			if ('0' > inputString[j] || inputString[j] > '9')
-			{
-				printf("Данные введены некорректно");
-				return collection;
-			}
-		}
-		collection[i] = atoi(inputString);
-	}
-	return collection;
-}
-int CalculateArray(int* collection, int Limit, int SizeOfCollection)
-{
-	int result = 0;
-	for (int i = 0; i < SizeOfCollection; i++)
-	{
-		if (collection[i] > Limit)
-		{
-			result++;
-		}
-	}
-	return result;
-}
-struct Node
-{
-	int value;
-	struct Node *next;
-	struct Node *prev;
-};
-
-struct List
-{
-	struct Node* first;
-	struct Node* last;
-};
-
-
-struct List* create()
-{
-	struct List* list = (struct List*)malloc(sizeof(struct List));
-	list->first = NULL;
-	list->last = NULL;
-	return list;
-}
-
-int insert(struct List* list)
-{
-	struct Node* node = (struct Node*)malloc(sizeof(struct Node));
-	char inputString[256];
-	if (list->first == NULL && list->last == NULL)
-	{
-		cin >> inputString;
-		for (int j = 0; j < strlen(inputString); j++)
-		{
-			if ('0' > inputString[j] || inputString[j] > '9')
-			{
-				printf("Данные введены некорректно");
-				return 1;
-			}
-		}
-		node->value = atoi(inputString);
-		node->next = NULL;
-		node->prev = NULL;
-		list->first = node;
-		list->last = node;
-	}
-	else {
-
-		cin >> inputString;
-		for (int j = 0; j < strlen(inputString); j++)
-		{
-			if ('0' > inputString[j] || inputString[j] > '9')
-			{
-				printf("Данные введены некорректно");
-				return 1;
-			}
-		}
-		node->value = atoi(inputString);
-		node->prev = list->last;
-		node->next = NULL;
-		list->last = node;
-	}
-	return 0;
-}
-int ScrollList(int limit, struct List* list)
-{
-
-	if (list == NULL || list->first == NULL)
-	{
-		return 0;
-	}
-
-	Node* curentNode = list->last;
-	int result = 0;
-	printf("коллекция");
-	do {
-		printf("%d ", curentNode->value);
-		curentNode = curentNode->prev;
-	} while (curentNode != list->last && curentNode != NULL);
-}
-
-int CalculatelList(int limit, struct List* list)
-{
-	int result = 0;
-	if (list == NULL || list->first == NULL)
-	{
-		return 0;
-	}
-
-	Node* curentNode = list->last;
-	printf("коллекция");
-	do {
-		result++;
-		curentNode = curentNode->prev;
-	} while (curentNode != list->last && curentNode != NULL);
-	return result;
-}
 int main()
 {
-	char inputString[256];
 	setlocale(LC_ALL, "Russian");
 	printf("Выбирете тип коллекции\nМассив(1)\nДвусвязный список(2)\nДвоичное дерево(3)\nДля выбора нужного типа коллекции введите номер соответствующего типа\n");
 	int Type;
 	int StartTime;
 	int EndTime;
 	int Time;
-	int SizeOfCollection;
 	int result=0;
 	scanf_s("%d", &Type);
-
-	Branch *Tree = NULL;
-
 	if (Type == 1)
-	{
-		
+	{	
+
 		StartTime = clock();
-		printf("Введите размер коллекции");
-		printf("\n");
-		scanf_s("%d", &SizeOfCollection);
-		printf("Введите число с кототорым хотите сравнить элементы коллекции!");
-		printf("\n");
-		int Limit;
-		scanf_s("%d", &Limit);
-		printf("коллекция\n");
-		int* collection = InputArray(SizeOfCollection);
+		WithArray.InitSize;
+		WithArray.InitLimit;
+		int* array = WithArray.InputArray(sizeOfArray);
 		if (sizeof(collection) < SizeOfCollection * 4)
 		{
 			return 0;
@@ -282,10 +87,10 @@ int main()
 				}
 			}
 			val = atoi(inputString);
-			add_node(val, Tree);
+			
 		}
-		show(Tree, Limit);
-		result=CalculateTree(Tree, Limit,result);
+		
+		result=
 		EndTime = clock();
 		Time = EndTime - StartTime;
 	}
